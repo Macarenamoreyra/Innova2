@@ -80,7 +80,7 @@
             dataGridView1.Name = "dataGridView1";
             dataGridView1.Size = new Size(337, 169);
             dataGridView1.TabIndex = 3;
-            dataGridView1.CellContentClick += dataGridView1_CellContentClick;
+            
             // 
             // label2
             // 
@@ -157,7 +157,7 @@
             comboBox1.Name = "comboBox1";
             comboBox1.Size = new Size(147, 23);
             comboBox1.TabIndex = 16;
-            comboBox1.SelectedIndexChanged += comboBox1_SelectedIndexChanged;
+           
             // 
             // Tintas
             // 

@@ -19,17 +19,22 @@ namespace WinFormsApp
 
         public Tintas()
         {
-            // Forzamos la verificación y creación de la tabla en SQLite si faltaba
-            using (var db = new AplicationDbContext())
+              using (var db = new AplicationDbContext())
             {
+                // Esto borra la base vieja y la recrea con todas sus tablas al 100%
+                db.Database.EnsureDeleted();
                 db.Database.EnsureCreated();
             }
 
             InitializeComponent();
             _repoTintas = new GenericRepository<Tinta>();
-            // ¡Importante! Esto conecta el evento de carga con la pantalla
+
             this.Load += Tintas_Load;
 
+            if (dataGridView1 != null)
+            {
+                dataGridView1.CellClick += dataGridView1_CellClick;
+            }
         }
 
         private void Tintas_Load(object sender, EventArgs e)
@@ -37,28 +42,31 @@ namespace WinFormsApp
             if (comboBox1 != null)
             {
                 comboBox1.Items.Clear();
-                // Esto obliga a que el usuario elija obligatoriamente de la lista
+                // Obliga a que el usuario elija obligatoriamente de la lista desplegable
                 comboBox1.DropDownStyle = ComboBoxStyle.DropDownList;
 
-                // Agregamos las opciones de colores
+                // Agregamos las opciones de colores solicitadas
                 comboBox1.Items.Add("Cian");
                 comboBox1.Items.Add("Magenta");
                 comboBox1.Items.Add("Yellow");
                 comboBox1.Items.Add("Black");
             }
 
-            CargarGrilla(); // Carga también la tabla de datos
+            CargarGrilla(); // Carga los datos en la grilla al iniciar
         }
 
-        private void CargarGrilla() //metodo para cargar la datagridview con los datos de la tabla Tintas
+        private void CargarGrilla() // Método para cargar la DataGridView con los datos de la tabla Tintas
         {
             try
             {
-                dataGridView1.DataSource = null;
-                var listaTintas = _repoTintas.ObtenerTodos();
-                if (listaTintas != null)
+                if (dataGridView1 != null)
                 {
-                    dataGridView1.DataSource = listaTintas.ToList();
+                    dataGridView1.DataSource = null;
+                    var listaTintas = _repoTintas.ObtenerTodos();
+                    if (listaTintas != null)
+                    {
+                        dataGridView1.DataSource = listaTintas.ToList();
+                    }
                 }
             }
             catch (Exception ex)
@@ -68,19 +76,19 @@ namespace WinFormsApp
             }
         }
 
-        private void buttonMenu_Click(object sender, EventArgs e) //btn volver al menu principal
+        private void buttonMenu_Click(object sender, EventArgs e) // Botón volver al menú principal
         {
             MenuInicio menuPrincipal = new MenuInicio();
             menuPrincipal.Show();
             this.Close();
         }
 
-        private void LimpiarCampos() // metodo limpiar campos
+        private void LimpiarCampos() // Método para limpiar campos e IDs seleccionados
         {
             tintaIdSeleccionado = null;
             if (comboBox1 != null) comboBox1.SelectedIndex = -1;
-            if (textBox3 != null) textBox3.Clear(); // textBox3: precio
-            if (textBox4 != null) textBox4.Clear(); // textBox4: stock
+            if (textBox3 != null) textBox3.Clear(); // textBox3: Precio por Litro
+            if (textBox4 != null) textBox4.Clear(); // textBox4: Stock
         }
 
         private void button1_Click_2(object sender, EventArgs e) // BOTÓN 1: AGREGAR
@@ -125,8 +133,7 @@ namespace WinFormsApp
             }
         }
 
-
-        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)//datagridview click
+        private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e) // DataGridView Click general de fila
         {
             if (e.RowIndex >= 0 && dataGridView1 != null)
             {
@@ -145,7 +152,7 @@ namespace WinFormsApp
             }
         }
 
-        private void button2_Click_2(object sender, EventArgs e) //btn eliminar
+        private void button2_Click_2(object sender, EventArgs e) // BOTÓN 2: ELIMINAR
         {
             if (tintaIdSeleccionado == null)
             {
@@ -172,7 +179,7 @@ namespace WinFormsApp
             }
         }
 
-        private void button3_Click_2(object sender, EventArgs e) //btn modificar
+        private void button3_Click_2(object sender, EventArgs e) // BOTÓN 3: MODIFICAR
         {
             try
             {
@@ -208,9 +215,5 @@ namespace WinFormsApp
                 MessageBox.Show($"Error detallado: {mensajeError}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-
-        
     }
 }
-        
-    
