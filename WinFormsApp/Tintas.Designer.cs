@@ -80,7 +80,6 @@
             dataGridView1.Name = "dataGridView1";
             dataGridView1.Size = new Size(337, 169);
             dataGridView1.TabIndex = 3;
-            
             // 
             // label2
             // 
@@ -124,6 +123,7 @@
             button4.TabIndex = 12;
             button4.Text = "Menu";
             button4.UseVisualStyleBackColor = true;
+            button4.Click += button4_Click;
             // 
             // label5
             // 
@@ -157,7 +157,6 @@
             comboBox1.Name = "comboBox1";
             comboBox1.Size = new Size(147, 23);
             comboBox1.TabIndex = 16;
-           
             // 
             // Tintas
             // 

@@ -19,7 +19,7 @@ namespace WinFormsApp
 
         public Tintas()
         {
-              using (var db = new AplicationDbContext())
+            using (var db = new AplicationDbContext())
             {
                 // Esto borra la base vieja y la recrea con todas sus tablas al 100%
                 db.Database.EnsureDeleted();
@@ -214,6 +214,13 @@ namespace WinFormsApp
                 string mensajeError = ex.InnerException != null ? ex.InnerException.Message : ex.Message;
                 MessageBox.Show($"Error detallado: {mensajeError}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            MenuInicio menuPrincipal = new MenuInicio();
+            menuPrincipal.Show();
+            this.Close();
         }
     }
 }
